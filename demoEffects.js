@@ -11,7 +11,7 @@ document.getElementById('demosButton').addEventListener('click', function (e) {
             const randomScale = 0.9 + Math.random() * 0.2; // 0.9 to 1.1 scale
             const randomX = Math.random() * 20 - 10; // -10 to +10 pixels
             const randomY = Math.random() * 20 - 10; // -10 to +10 pixels
-            el.style.transition = 'transform 0.5s';
+            el.style.transition = 'transform 0.1s';
             el.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg) scale(${randomScale})`;
         });
     };
@@ -19,12 +19,12 @@ document.getElementById('demosButton').addEventListener('click', function (e) {
     // Function to reset transformations
     const reset = () => {
         elements.forEach(el => {
-            el.style.transition = 'transform 0.5s';
+            el.style.transition = 'transform 0.1s';
             el.style.transform = '';
         });
     };
 
-    // Scramble elements every 0.5 seconds
+    // Scramble elements every 0.1 seconds
     const intervalId = setInterval(scramble, 100);
 
     // Stop scrambling after 10 seconds and reset

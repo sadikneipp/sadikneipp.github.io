@@ -7,7 +7,7 @@ document.getElementById('demosButton').addEventListener('click', function (e) {
     // Function to apply random transformations
     const scramble = () => {
         elements.forEach(el => {
-            const randomRotation = Math.random() * 20 - 10; // -10 to +10 degrees
+            const randomRotation = Math.random() * 20; // 0 to +20 degrees
             const randomScale = 0.9 + Math.random() * 0.2; // 0.9 to 1.1 scale
             const randomX = Math.random() * 20 - 10; // -10 to +10 pixels
             const randomY = Math.random() * 20 - 10; // -10 to +10 pixels
@@ -25,7 +25,7 @@ document.getElementById('demosButton').addEventListener('click', function (e) {
     };
 
     // Scramble elements every 0.5 seconds
-    const intervalId = setInterval(scramble, 500);
+    const intervalId = setInterval(scramble, 100);
 
     // Stop scrambling after 10 seconds and reset
     setTimeout(() => {

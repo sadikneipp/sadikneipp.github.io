@@ -4,30 +4,40 @@ document.getElementById('demosButton').addEventListener('click', function (e) {
     // Select all elements you want to animate
     const elements = document.body.querySelectorAll('header, nav, main, a, h1');
 
-    // Function to apply random transformations
+    // Assign a continuous rotation direction and initial values for each element
+    elements.forEach(el => {
+        el.dataset.rotation = Math.random() < 0.5 ? -1 : 1; // Decide initial rotation direction
+        el.dataset.rotationDegree = 0;
+    });
+
+    // Function to apply transformations
     const scramble = () => {
         elements.forEach(el => {
-            const randomRotation = Math.random() * 20; // 0 to +20 degrees
+            const rotationDirection = parseInt(el.dataset.rotation);
+            el.dataset.rotationDegree = parseInt(el.dataset.rotationDegree) + rotationDirection * (Math.random() * 5);
+            const rotationDegree = el.dataset.rotationDegree;
+
             const randomScale = 0.9 + Math.random() * 0.2; // 0.9 to 1.1 scale
-            const randomX = Math.random() * 20 - 10; // -10 to +10 pixels
-            const randomY = Math.random() * 20 - 10; // -10 to +10 pixels
-            el.style.transition = 'transform 0.1s';
-            el.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotation}deg) scale(${randomScale})`;
+            const randomX = Math.random() * 5 - 2.5; // -2.5 to +2.5 pixels
+            const randomY = Math.random() * 5 - 2.5; // -2.5 to +2.5 pixels
+
+            el.style.transition = 'transform 0.1s linear';
+            el.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${rotationDegree}deg) scale(${randomScale})`;
         });
     };
 
     // Function to reset transformations
     const reset = () => {
         elements.forEach(el => {
-            el.style.transition = 'transform 0.1s';
+            el.style.transition = 'transform 0.5s ease-out';
             el.style.transform = '';
         });
     };
 
-    // Scramble elements every 0.1 seconds
+    // Apply transformations at a higher frequency for smoother animation
     const intervalId = setInterval(scramble, 100);
 
-    // Stop scrambling after 10 seconds and reset
+    // Stop the animation after 10 seconds and reset
     setTimeout(() => {
         clearInterval(intervalId);
         reset();

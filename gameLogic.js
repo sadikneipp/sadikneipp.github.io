@@ -17,6 +17,9 @@ function startGame() {
     document.querySelector('nav').style.display = 'none';
     document.querySelector('main').style.display = 'none';
 
+    // Show score
+    document.querySelector('score').style.display = '';
+
     // Prepare the game area
     gameArea = document.createElement('div');
     gameArea.id = 'gameArea';
@@ -162,5 +165,6 @@ function startGame() {
         document.querySelector('header').style.display = '';
         document.querySelector('nav').style.display = '';
         document.querySelector('main').style.display = '';
+        document.querySelector('score').style.display = 'none';
     }
 }

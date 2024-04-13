@@ -24,7 +24,10 @@ animate()
 function initThree() {
     // Camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100)
-    camera.position.z = 5
+    camera.position.z = 10
+    camera.position.y = 4
+    const eulerStart = new THREE.Euler(-Math.PI / 4, 0, 0, 'XYZ');
+    camera.quaternion.setFromEuler(eulerStart)
 
     // Scene
     scene = new THREE.Scene()
@@ -41,6 +44,14 @@ function initThree() {
     const geometry = new THREE.BoxBufferGeometry(2, 2, 2)
     const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 
+    // Ground
+    const planeGeometry = new THREE.PlaneGeometry(10, 10); // Large enough to catch the box
+    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x555555, side: THREE.DoubleSide });
+    const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+    planeMesh.rotation.x = -Math.PI / 2; // Rotate to match the groundBody in Cannon-es
+    planeMesh.position.y = -4; // Align with the groundBody position
+    scene.add(planeMesh);
+
     mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 }
@@ -53,6 +64,7 @@ function onWindowResize() {
 
 function initCannon() {
     world = new CANNON.World()
+    world.gravity.set(0, -1, 0); // Set gravity to act downward
 
     // Box
     const shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
@@ -60,9 +72,25 @@ function initCannon() {
         mass: 1,
     })
     body.addShape(shape)
-    body.angularVelocity.set(0, 10, 0)
-    body.angularDamping = 0.5
+    const angularVelocityMult = 5
+    body.angularVelocity.set(angularVelocityMult * Math.random(), angularVelocityMult * Math.random(), angularVelocityMult * Math.random())
+    body.angularDamping = 0
+
+    // random starting angle
+    const startingPositionConstantMult = 2 * Math.PI
+    body.quaternion.setFromEuler(startingPositionConstantMult * Math.random(), startingPositionConstantMult * Math.random(), startingPositionConstantMult * Math.random())
+
     world.addBody(body)
+
+    // Plane
+    const groundShape = new CANNON.Plane();
+    const groundBody = new CANNON.Body({
+        mass: 0, // mass = 0 makes the body static
+    });
+    groundBody.addShape(groundShape);
+    groundBody.position.set(0, -4, 0); // Position the ground slightly below the box
+    groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0); // Rotate the plane to be horizontal
+    world.addBody(groundBody);
 }
 
 function animate() {

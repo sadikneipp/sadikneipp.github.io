@@ -5,7 +5,7 @@ const app = express();
 const port = 3000; // You can choose any port that's available
 
 // Serve static files from the 'resources' directory
-app.use(express.static('resources'));
+app.use(express.static('.'));
 
 // Route to serve index.html
 app.get('/', (req, res) => {

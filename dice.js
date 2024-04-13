@@ -1,6 +1,7 @@
 import * as CANNON from 'https://cdn.skypack.dev/cannon-es';
 import * as THREE from 'https://unpkg.com/three@0.122.0/build/three.module.js'
 
+
 /**
  * Really basic example to show cannon.js integration
  * with three.js.
@@ -64,7 +65,7 @@ function onWindowResize() {
 
 function initCannon() {
     world = new CANNON.World()
-    world.gravity.set(0, -1, 0); // Set gravity to act downward
+    world.gravity.set(0, -9.82, 0); // Set gravity to act downward
 
     // Box
     const shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))

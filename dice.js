@@ -42,8 +42,20 @@ function initThree() {
     window.addEventListener('resize', onWindowResize)
 
     // Box
-    const geometry = new THREE.BoxBufferGeometry(2, 2, 2)
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+
+    // Load textures
+    const loader = new THREE.TextureLoader();
+    const materials = [
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-1.webp') }), // right side
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-6.webp') }), // left side
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-3.webp') }), // top side
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-4.webp') }), // bottom side
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-5.webp') }), // front side
+        new THREE.MeshBasicMaterial({ map: loader.load('die-side-2.webp') })  // back side
+    ];
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    mesh = new THREE.Mesh(geometry, materials)
+    scene.add(mesh)
 
     // Ground
     const planeGeometry = new THREE.PlaneGeometry(10, 10); // Large enough to catch the box
@@ -52,9 +64,6 @@ function initThree() {
     planeMesh.rotation.x = -Math.PI / 2; // Rotate to match the groundBody in Cannon-es
     planeMesh.position.y = -4; // Align with the groundBody position
     scene.add(planeMesh);
-
-    mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
 }
 
 function onWindowResize() {
